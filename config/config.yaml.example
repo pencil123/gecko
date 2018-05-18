@@ -1,0 +1,21 @@
+elastic:
+    hosts:
+        - www.example:9200
+    http_auth: !!python/tuple ['username','password']
+
+elastic_parameter:
+    index: logstash-*
+    doc_type: master
+    request_timeout: 90
+
+mongo:
+    host: localhost
+    port: 27017
+    database: elastic
+    username: username
+    password: password
+
+sendmail:
+    mail_to :
+        - user@example.com
+        - user1@example.com
