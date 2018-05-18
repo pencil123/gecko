@@ -21,7 +21,7 @@ class image_page(object):
 		self.wget = wget()
 		url = thread_url
 		title = title
-
+		print url
 		#title 为空；舍弃
 		if not title:
 			return False
@@ -85,10 +85,7 @@ class image_page(object):
 		imgs_list = []
 		#print body.get_text()
 		content = ''
-		#html标签单层遍历
-		# for img in body.contents:
-		# 	if 'input' == img.name:
-		# 		imgs_list.append(img.attrs['src'])
+		imgsurl_tag = ['src','data-src']
 
 		#html标签逐层遍历
 		tmp_cont_before = ''
@@ -97,11 +94,23 @@ class image_page(object):
 			#下载连接是否在黑名单中
 				# if img.attrs['src'] in blackurl_imgs:
 				# 	continue
+
+				#判断type是否为图片
 				image = False
-				if 'image' == tags.attrs['type']:
+				if 'type' in tags.attrs and 'image' == tags.attrs['type']:
 					image = True
-				imgs_list.append((tags.attrs['src'],image))
-				tmp_cont = "<img>" + tags.attrs['src'].encode('utf8') + "</img>"
+				else:
+					continue
+
+				#从imgsurl_tag中获取图片url
+				tag_srcname = filter(lambda tag:tag in tags.attrs,imgsurl_tag)
+				if len(tag_srcname) >=1:
+					src_name = tag_srcname[0]
+				else:
+					continue
+
+				imgs_list.append((tags.attrs[src_name],image))
+				tmp_cont = "<img>" + tags.attrs[src_name].encode('utf8') + "</img>"
 				content = content + tmp_cont + '\r\n'
 			else:
 				tmp_cont = tags.string
