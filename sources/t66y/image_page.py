@@ -48,8 +48,10 @@ class image_page(object):
 		if forum_type == 'images':
 			#tid = self.db.thread(fid=fid,url=url,title=title)
 			content = self.get_images(body,0)#tid
-
-		self.db.query2("insert into pages(url,title,content) values(%s,%s,%s)",(url.encode('utf8'),title.encode('utf8'),content.encode('utf8')))
+		print content
+		print content.encode('utf8')
+		self.db.query2("insert into pages(url,title,content) values(%s,%s,%s)",\
+			(url,title,content))
 		return None
 
 

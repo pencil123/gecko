@@ -11,7 +11,11 @@ class MysqlConn(object):
                      'passwd':"gecko",  # your password
                      'db':"gecko1"}
 		self.conn=MySQLdb.connect(**mysql_var)
+		self.conn.set_character_set('utf8')
 		self.cursor=self.conn.cursor()
+		self.cursor.execute('SET NAMES utf8;')
+		self.cursor.execute('SET CHARACTER SET utf8;')
+		self.cursor.execute('SET character_set_connection=utf8;')
 	def selectall(self,str_sql):
 		try:
 			self.cursor.execute(str_sql)

@@ -60,8 +60,7 @@ class wget(object):
 		http_status = self.handler.getinfo(pycurl.HTTP_CODE)
 		#状态如果不是200
 		if 200 != http_status:
-			print http_status
-			return http_status
+			return str(http_status)
 
 		self.string_peferer = str_url
 		content = content_buf.getvalue()
