@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#-*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*- 
 import sys
 import json
 import time
@@ -10,7 +10,8 @@ from bs4 import BeautifulSoup as BS
 
 from libs.wget import wget
 from libs.mysqlconn import MysqlConn
-
+reload(sys)
+sys.setdefaultencoding('utf-8')
 class image_page(object):
 	def __init__(self,thread_url,title,forum_type,fid):
 		'''
@@ -45,37 +46,6 @@ class image_page(object):
 		if forum_type == 'images':
 			#tid = self.db.thread(fid=fid,url=url,title=title)
 			content = self.get_images(body,0)#tid
-		# elif forum_type == 'text':
-		# 	content = ''
-		# 	for string in body.stripped_strings:
-		# 		content += string + '\n'
-		# 	#print type(content)
-		# 	self.db.thread(fid=fid,url=url,title=title,content=content)
-		# elif forum_type == 'multi':
-		# 	self.op_multi(body,fid,url,title)
-
-	# def op_multi(self,body,fid,url,title):
-	# 	content = ''
-	# 	for tag in body.children:
-	# 		#print tag,'end'
-	# 		if not tag.name or 'br' == tag.name or 'span' == tag.name:
-	# 			continue
-
-	# 		if 'img' == tag.name:
-	# 			if tag.attrs['src'] in ads['imgs']:
-	# 				continue
-	# 			content += '<img src="' + tag.attrs['src'] +'" >\n'
-
-	# 		if 'a' == tag.name:
-	# 			if not tag.has_attr('href'):
-	# 				continue
-	# 			if tag.attrs['href'] in ads['addrs']:
-	# 				continue
-	# 			content += '<a href="' + tag.attrs['href'] +'" >' + tag.get_text() + "</a>\n"
-	
-	# 		content += tag.get_text() + '\n'
-	
-	# 	self.db.thread(fid=fid,url=url,title=title,content=content)
 
 		self.db.query2("insert into pages(url,title,content) values(%s,%s,%s)",(url.encode('utf8'),title.encode('utf8'),content.encode('utf8')))
 		return None
@@ -109,8 +79,9 @@ class image_page(object):
 					continue
 				if len(tags.attrs[src_name]) >= 300:
 					continue
-				imgs_list.append((tags.attrs[src_name],image))
+				imgs_list.append((tags.attrs[src_name].encode('utf8'),image))
 				tmp_cont = "<img>" + tags.attrs[src_name].encode('utf8') + "</img>"
+				#print tmp_cont,type(tmp_cont)
 				content = content + tmp_cont + '\r\n'
 			else:
 				tmp_cont = tags.string

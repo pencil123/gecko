@@ -22,8 +22,45 @@ class t66y(object):
 		#print self.wget.get_content(self.domain)
 
 	def op_index(self):
-		forum_list =[{'id':16,'forum_url':'https://t66y.com/thread0806.php?fid=16&search=&page=41','forum_type':'images'},
-		{'id':20,'forum_url':'https://t66y.com/thread0806.php?fid=20','forum_type':'text'}]
+		forum_list =[
+		{'id':16,'forum_url':'https://t66y.com/thread0806.php?fid=16','forum_type':'images'},
+		{'id':20,'forum_url':'https://t66y.com/thread0806.php?fid=20','forum_type':'text'},
+		{'id':7,'forum_url':'https://t66y.com/thread0806.php?fid=7','forum_type':'text'},
+		{'id':812,'forum_url':'https://t66y.com/thread0806.php?fid=8&type=12','forum_type':'text'},
+		{'id':84,'forum_url':'https://t66y.com/thread0806.php?fid=8&type=4','forum_type':'text'},
+		{'id':83,'forum_url':'https://t66y.com/thread0806.php?fid=8&type=3','forum_type':'text'},
+		{'id':82,'forum_url':'https://t66y.com/thread0806.php?fid=8&type=2','forum_type':'text'},
+		{'id':81,'forum_url':'https://t66y.com/thread0806.php?fid=8&type=1','forum_type':'text'},
+		{'id':2,'forum_url':'https://t66y.com/thread0806.php?fid=2','forum_type':'text'},
+		{'id':15,'forum_url':'https://t66y.com/thread0806.php?fid=15','forum_type':'text'},
+		{'id':4,'forum_url':'https://t66y.com/thread0806.php?fid=4','forum_type':'text'},
+		{'id':53,'forum_url':'https://t66y.com/thread0806.php?fid=5&type=3','forum_type':'text'},
+		{'id':52,'forum_url':'https://t66y.com/thread0806.php?fid=5&type=2','forum_type':'text'},
+		{'id':51,'forum_url':'https://t66y.com/thread0806.php?fid=5&type=1','forum_type':'text'},
+		{'id':25,'forum_url':'https://t66y.com/thread0806.php?fid=25','forum_type':'text'},
+		{'id':2612,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=12','forum_type':'text'},
+		{'id':265,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=5','forum_type':'text'},
+		{'id':264,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=4','forum_type':'text'},
+		{'id':263,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=3','forum_type':'text'},
+		{'id':262,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=2','forum_type':'text'},
+		{'id':261,'forum_url':'https://t66y.com/thread0806.php?fid=26&type=1','forum_type':'text'},
+		{'id':2712,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=12','forum_type':'text'},
+		{'id':275,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=5','forum_type':'text'},
+		{'id':274,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=4','forum_type':'text'},
+		{'id':273,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=3','forum_type':'text'},
+		{'id':272,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=2','forum_type':'text'},
+		{'id':271,'forum_url':'https://t66y.com/thread0806.php?fid=27&type=1','forum_type':'text'},
+		{'id':215,'forum_url':'https://t66y.com/thread0806.php?fid=21&type=5','forum_type':'text'},
+		{'id':214,'forum_url':'https://t66y.com/thread0806.php?fid=21&type=4','forum_type':'text'},
+		{'id':213,'forum_url':'https://t66y.com/thread0806.php?fid=21&type=3','forum_type':'text'},
+		{'id':212,'forum_url':'https://t66y.com/thread0806.php?fid=21&type=2','forum_type':'text'},
+		{'id':211,'forum_url':'https://t66y.com/thread0806.php?fid=21&type=1','forum_type':'text'},
+		{'id':226,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=6','forum_type':'text'},
+		{'id':225,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=5','forum_type':'text'},
+		{'id':224,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=4','forum_type':'text'},
+		{'id':223,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=3','forum_type':'text'},
+		{'id':222,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=2','forum_type':'text'},
+		{'id':221,'forum_url':'https://t66y.com/thread0806.php?fid=22&type=1','forum_type':'text'}]
 
 		for num in range(len(forum_list)):
 			self.op_forum(**forum_list[num])

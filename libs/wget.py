@@ -16,6 +16,9 @@ try:
 except ImportError:
 	from StringIO import StringIO as BytesIO
 
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 class wget(object):
 	def __init__(self):
 		self.string_peferer = ''
