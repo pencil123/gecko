@@ -83,7 +83,6 @@ class image_page(object):
 
 	def get_images(self,body,fid):
 		imgs_list = []
-		#print body.get_text()
 		content = ''
 		imgsurl_tag = ['src','data-src']
 
@@ -108,7 +107,8 @@ class image_page(object):
 					src_name = tag_srcname[0]
 				else:
 					continue
-
+				if len(tags.attrs[src_name]) >= 300:
+					continue
 				imgs_list.append((tags.attrs[src_name],image))
 				tmp_cont = "<img>" + tags.attrs[src_name].encode('utf8') + "</img>"
 				content = content + tmp_cont + '\r\n'

@@ -22,7 +22,7 @@ class t66y(object):
 		#print self.wget.get_content(self.domain)
 
 	def op_index(self):
-		forum_list =[{'id':16,'forum_url':'https://t66y.com/thread0806.php?fid=16&search=&page=2','forum_type':'images'},
+		forum_list =[{'id':16,'forum_url':'https://t66y.com/thread0806.php?fid=16&search=&page=41','forum_type':'images'},
 		{'id':20,'forum_url':'https://t66y.com/thread0806.php?fid=20','forum_type':'text'}]
 
 		for num in range(len(forum_list)):
