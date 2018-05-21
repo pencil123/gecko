@@ -25,7 +25,7 @@ class image_page(object):
 		print url
 		#title 为空；舍弃
 		if not title:
-			return False
+			return None
 		#thread已经存在；则直接返回
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
@@ -35,7 +35,9 @@ class image_page(object):
 			content = self.wget.get_content(url)
 		except Exception, e:
 			print 'str(e):\t\t', str(e)
-			return False
+			return None
+		if len(content) < 2014:
+			return None
 		bsobj = BS(content,from_encoding="gb18030")
 		body = bsobj.find("div",{'class':'tpc_content do_not_catch'})
 		if not body:
