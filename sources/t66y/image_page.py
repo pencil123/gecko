@@ -30,6 +30,8 @@ class image_page(object):
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
 
+		self.db.query2("insert into pages(url,title) values(%s,%s)",(url,title))
+		return None
 		#页面抓取失败，返回状态不是200
 		try:
 			content = self.wget.get_content(url)
