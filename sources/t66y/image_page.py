@@ -4,6 +4,7 @@ import sys
 import json
 import time
 import os
+import re
 import datetime
 import types
 from bs4 import BeautifulSoup as BS
@@ -26,11 +27,18 @@ class image_page(object):
 		#title 为空；舍弃
 		if not title:
 			return None
+
+		pattern=re.compile(r'https://t66y.com/htm_data/(\d+)/(\d+)/(\d+)\.html',re.DOTALL)
+		match = pattern.match(url)
+		if match:
+			url_id,url_date,url_num = match.groups()
+		else:
+			return None
 		#thread已经存在；则直接返回
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
 
-		self.db.query2("insert into pages(url,title) values(%s,%s)",(url,title))
+		self.db.query2("insert into pages(fid,url,url_date,url_num,title) values(%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title))
 		return None
 		#页面抓取失败，返回状态不是200
 		try:
