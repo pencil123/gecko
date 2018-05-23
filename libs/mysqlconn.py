@@ -17,7 +17,7 @@ class MysqlConn(object):
 		self.cursor.execute('SET NAMES utf8;')
 		self.cursor.execute('SET CHARACTER SET utf8;')
 		self.cursor.execute('SET character_set_connection=utf8;')
-		self.cursor..execute("SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE")
+		self.cursor.execute("SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;")
 	def selectall(self,str_sql):
 		try:
 			self.cursor.execute(str_sql)
