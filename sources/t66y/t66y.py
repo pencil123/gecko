@@ -6,6 +6,7 @@ import time
 import types
 from bs4 import BeautifulSoup as BS
 
+from guess import Guess
 from libs.wget import wget
 from libs.mysqlconn import MysqlConn
 from image_page import image_page
@@ -18,6 +19,7 @@ class t66y(object):
 		self.wget = wget()
 		self.db =MysqlConn()
 	def run(self):
+		#handler = Guess()
 		self.op_index()
 		#print self.wget.get_content(self.domain)
 

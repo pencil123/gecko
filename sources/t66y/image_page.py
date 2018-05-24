@@ -38,8 +38,6 @@ class image_page(object):
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
 
-		self.db.query2("insert into pages(fid,url,url_date,url_num,title) values(%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title))
-		return None
 		#页面抓取失败，返回状态不是200
 		try:
 			content = self.wget.get_content(url)
@@ -53,6 +51,10 @@ class image_page(object):
 		if not body:
 		# 	self.db.thread_kongbody(fid=fid,url=url)
 			return None
+
+		self.db.query2("insert into pages(fid,url,url_date,url_num,title,content) values(%s,%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title,body))
+		return None
+
 
 		#区分内容类型
 		if forum_type == 'images':

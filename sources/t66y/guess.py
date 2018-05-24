@@ -27,14 +27,24 @@ class Guess(object):
 		'https://t66y.com/htm_data/27/']
 		self.wget = wget()
 		self.db = MysqlConn()
+		max_sql = 'select max(url_num) from pages'
+		max_num = self.db.selectone(max_sql)[0]
 
-		max_num = 3150510
+		min_sql = 'select max(pagenum) from guess'
+		min_num = self.db.selectone(min_sql)[0]
+		if not min_num:
+			min_num = 30611
+		print max_num,min_num
 
-		for num in range(max_num,50534,-1):
-			sql = "select count(*) from url where pagenum = %s" % (num)
+		for num in range(max_num,min_num,-1):
+			sql = "select count(*) from pages where url_num = %s" % (num)
 			count_tuple = self.db.selectone(sql)
 			if not count_tuple[0]:
-				sql = "insert into guess (pagenum) values (%s)" % (num)
+				guess_date_sql = "select url_date from pages where url_num < %s order by id desc limit 1" % (num)
+				guess_date = self.db.selectone(guess_date_sql)[0]
+
+				sql = "insert into guess (pagedate,pagenum) values (%s,%s)" % (guess_date,num)
+				#print sql
 				self.db.query(sql)
 
 		# for pagenum in range(46456,50534):
