@@ -19,8 +19,8 @@ class t66y(object):
 		self.wget = wget()
 		self.db =MysqlConn()
 	def run(self):
-		#handler = Guess()
-		self.op_index()
+		handler = Guess()
+		#self.op_index()
 		#print self.wget.get_content(self.domain)
 
 	def op_index(self):
@@ -83,7 +83,7 @@ class t66y(object):
 		try:
 			content = self.wget.get_content(forum_url)
 		except:
-			print content
+			print #content
 			return False
 
 		#分析页面thread

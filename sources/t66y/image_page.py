@@ -34,6 +34,9 @@ class image_page(object):
 			url_id,url_date,url_num = match.groups()
 		else:
 			return None
+
+		self.db.query2("insert into pages(fid,url,url_date,url_num,title) values(%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title))
+		return None
 		#thread已经存在；则直接返回
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
