@@ -34,6 +34,9 @@ class DiscuzAPI:
 		postData = urllib.urlencode({'username': username, 'password': password, 'answer': '', 'cookietime': '2592000', 'handlekey': 'ls', 'questionid': '0', 'quickforward': 'yes',  'fastloginfield': 'username'})
 		req = urllib2.Request(url,postData)
 		content = urllib2.urlopen(req).read()
+		# print url
+		# print postData
+		# print content
 		if username.encode('utf-8') in content:
 			self.isLogon = True
 			print 'logon success!'
@@ -81,28 +84,32 @@ class DiscuzAPI:
 		'''发帖'''
 
 		url = self.forumUrl + '/forum.php?mod=post&action=newthread&fid=' + str(fid) + '&topicsubmit=yes&infloat=yes&handlekey=fastnewpost&inajax=1'
+
+		if len(subject) >= 25:
+			subject = subject[0:25]
 		refer = self.forumUrl + "/forum.php?mod=forumdisplay&fid=%d" % fid
 		postData = urllib.urlencode(
 			{'formhash':self.formhash,
-			'message':msg,#.encode('utf-8'),
-			'subject':subject,#.encode('utf-8'),
+			'message':msg.encode('utf-8'),
+			'subject':subject.encode('utf-8'),
 			'posttime':int(time.time()),
-			'addfeed':'1', 
-			'allownoticeauthor':'1', 
-			'checkbox':'0', 
-			'newalbum':'', 
-			'readperm':'', 
-			'rewardfloor':'', 
-			'rushreplyfrom':'', 
-			'rushreplyto':'', 
-			'save':'', 
-			'stopfloor':'', 
+			# 'addfeed':'1',
+			# 'allownoticeauthor':'1',
+			# 'checkbox':'0',
+			# 'newalbum':'',
+			# 'readperm':'',
+			# 'rewardfloor':'',
+			# 'rushreplyfrom':'',
+			# 'rushreplyto':'',
+			# 'save':'',
+			# 'stopfloor':'',
 			#'typeid':typeid,
-			'attachnew[%s][description]' % imgId: "",
-			'attachnew[%s][description]' % attachId: "",
-			'uploadalbum':'', 
-			'usesig':'1', 
-			'wysiwyg':'0' })
+			# 'attachnew[%s][description]' % imgId: "",
+			# 'attachnew[%s][description]' % attachId: "",
+			# 'uploadalbum':'',
+			'htmlon':'1',
+			'usesig':'1',
+			'wysiwyg':'0'})
 		req = urllib2.Request(url,postData)
 		req.add_header('Referer',refer)
 		content = urllib2.urlopen(req).read().decode('utf-8')

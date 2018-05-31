@@ -19,8 +19,8 @@ class t66y(object):
 		self.wget = wget()
 		self.db =MysqlConn()
 	def run(self):
-		handler = Guess()
-		#self.op_index()
+		#handler = Guess()
+		self.op_index()
 		#print self.wget.get_content(self.domain)
 
 	def op_index(self):
@@ -118,5 +118,4 @@ class t66y(object):
 			count_tuple = self.db.selectone(sql)
 			if count_tuple[0]:
 				continue
-
 			image_page(**thread_dict)

@@ -11,6 +11,8 @@ from bs4 import BeautifulSoup as BS
 
 from libs.wget import wget
 from libs.mysqlconn import MysqlConn
+from libs.utils import utils
+
 reload(sys)
 sys.setdefaultencoding('utf-8')
 class image_page(object):
@@ -21,6 +23,7 @@ class image_page(object):
 		'''
 		self.db =MysqlConn()
 		self.wget = wget()
+		self.utils = utils('ads')
 		url = thread_url
 		title = title
 		print url
@@ -34,9 +37,6 @@ class image_page(object):
 			url_id,url_date,url_num = match.groups()
 		else:
 			return None
-
-		self.db.query2("insert into pages(fid,url,url_date,url_num,title) values(%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title))
-		return None
 		#thread已经存在；则直接返回
 		# if self.db.thread_exist(fid=fid,url=url):
 		# 	return True
@@ -55,29 +55,41 @@ class image_page(object):
 		# 	self.db.thread_kongbody(fid=fid,url=url)
 			return None
 
-		self.db.query2("insert into pages(fid,url,url_date,url_num,title,content) values(%s,%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title,body))
-		return None
-
-
 		#区分内容类型
 		if forum_type == 'images':
 			#tid = self.db.thread(fid=fid,url=url,title=title)
-			content = self.get_images(body,0)#tid
-		print content
+			attach,content = self.get_images(body,0)#tid
 		print content.encode('utf8')
-		self.db.query2("insert into pages(url,title,content) values(%s,%s,%s)",\
-			(url,title,content))
+		self.db.query2("insert into pages(fid,url,url_date,url_num,title,content,attach) values(%s,%s,%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title,content,attach))
 		return None
-
 
 	def get_images(self,body,fid):
 		imgs_list = []
 		content = ''
-		imgsurl_tag = ['src','data-src']
+		imgsurl_tag = ['data-src','src']
 
 		#html标签逐层遍历
 		tmp_cont_before = ''
 		for tags in body.descendants:
+		#广告处理
+			if 'a' == tags.name and 'href' in tags.attrs:
+				#不存在href属性的链接不处理
+				if not self.utils.ads(tags.attrs['href']):
+					content = content + tags.prettify()
+				continue
+			else:
+				continue
+
+			if 'img' == tags.name and 'data-link' in tags.attrs:
+				if not self.utils.ads(tags.attrs['data-link']) and 'src' in tags.attrs:
+					content = content + '<img src=\"' + tags.attrs['src'].encode('utf8') + '\" >'
+				continue
+			else:
+				if 'src' in tags.attrs:
+					content = content + '<img src=\"' + tags.attrs['src'].encode('utf8') + '\" >'
+				continue
+
+		#图片处理
 			if 'input' == tags.name:
 			#下载连接是否在黑名单中
 				# if img.attrs['src'] in blackurl_imgs:
@@ -87,8 +99,6 @@ class image_page(object):
 				image = False
 				if 'type' in tags.attrs and 'image' == tags.attrs['type']:
 					image = True
-				else:
-					continue
 
 				#从imgsurl_tag中获取图片url
 				tag_srcname = filter(lambda tag:tag in tags.attrs,imgsurl_tag)
@@ -96,19 +106,25 @@ class image_page(object):
 					src_name = tag_srcname[0]
 				else:
 					continue
+
 				if len(tags.attrs[src_name]) >= 300:
 					continue
-				imgs_list.append((tags.attrs[src_name].encode('utf8'),image))
-				tmp_cont = "<img>" + tags.attrs[src_name].encode('utf8') + "</img>"
-				#print tmp_cont,type(tmp_cont)
+
+				#imgs_list.append((tags.attrs[src_name].encode('utf8'),image))
+				tmp_cont = '<img src=\"' + tags.attrs[src_name].encode('utf8') + '\" >'
+
 				content = content + tmp_cont + '\r\n'
+				continue
 			else:
 				tmp_cont = tags.string
 				if tmp_cont and (tmp_cont != tmp_cont_before):
 					content = content + tmp_cont + '\r\n'
 					tmp_cont_before = tmp_cont
-		self.create_imgfile(imgs_list)
-		return content
+
+		#self.create_imgfile(imgs_list)
+		#print len(imgs_list)
+		#print content
+		return len(imgs_list),content
 
 	def create_imgfile(self,imgs_list):
 		# print "down_img",imgs_list
