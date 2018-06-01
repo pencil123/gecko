@@ -59,7 +59,7 @@ class image_page(object):
 		if forum_type == 'images':
 			#tid = self.db.thread(fid=fid,url=url,title=title)
 			attach,content = self.get_images(body,0)#tid
-		print content.encode('utf8')
+		#print content.encode('utf8')
 		self.db.query2("insert into pages(fid,url,url_date,url_num,title,content,attach) values(%s,%s,%s,%s,%s,%s,%s)",(int(url_id),url,int(url_date),int(url_num),title,content,attach))
 		return None
 
@@ -76,6 +76,7 @@ class image_page(object):
 				#不存在href属性的链接不处理
 				if not self.utils.ads(tags.attrs['href']):
 					content = content + tags.prettify()
+					self.db.query2("insert into links(link) values(%s)",(tags.attrs['href'],))
 				continue
 			else:
 				continue
@@ -83,10 +84,12 @@ class image_page(object):
 			if 'img' == tags.name and 'data-link' in tags.attrs:
 				if not self.utils.ads(tags.attrs['data-link']) and 'src' in tags.attrs:
 					content = content + '<img src=\"' + tags.attrs['src'].encode('utf8') + '\" >'
+					self.db.query2("insert into images(url) value(%s)",(tags.attrs['src'],))
 				continue
 			else:
 				if 'src' in tags.attrs:
 					content = content + '<img src=\"' + tags.attrs['src'].encode('utf8') + '\" >'
+					self.db.query2("insert into images(url) value(%s)",(tags.attrs['src'],))
 				continue
 
 		#图片处理
@@ -112,7 +115,7 @@ class image_page(object):
 
 				#imgs_list.append((tags.attrs[src_name].encode('utf8'),image))
 				tmp_cont = '<img src=\"' + tags.attrs[src_name].encode('utf8') + '\" >'
-
+				self.db.query2("insert into images(url) value(%s)",(tags.attrs[src_name]))
 				content = content + tmp_cont + '\r\n'
 				continue
 			else:

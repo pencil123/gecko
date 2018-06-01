@@ -33,7 +33,7 @@ class Guess(object):
 		# 		self.db.query(sql)
 
 		for num100 in range(31541):
-			sql = 'select pagedate,pagenum from guess where pagenum<3092727 order by id asc limit %s,100' % (100*num100)
+			sql = 'select pagedate,pagenum from guess where pagenum<3040909 order by id asc limit %s,100' % (100*num100)
 			pagenum_tuple = self.db.selectall(sql)
 			for num in range(len(pagenum_tuple)):
 				pagedate,pagenum = pagenum_tuple[num]
@@ -56,29 +56,22 @@ class Guess(object):
 		'https://t66y.com/htm_data/23/',
 		'https://t66y.com/htm_data/25/',
 		'https://t66y.com/htm_data/26/',
-		'https://t66y.com/htm_data/27/'
-		'https://t66y.com/htm_data/10/',
-		'https://t66y.com/htm_data/11/',
-		'https://t66y.com/htm_data/12/',
-		'https://t66y.com/htm_data/13/',
-		'https://t66y.com/htm_data/14/']
+		'https://t66y.com/htm_data/27/',
+		'https://t66y.com/htm_data/10/']
 
-		for url_num in range(len(forum_url)):
-			url = forum_url[url_num] + str(pagedate) + '/' + str(pagenum) + ".html"
-			if '404' != self.wget.get_content(url):
-				self.url_success(url)
+		for new_date in (pagedate,pagedate-1,pagedate+1):
+			hit = False
+			for url_num in range(len(forum_url)):
+				url = forum_url[url_num] + str(new_date) + '/' + str(pagenum) + ".html"
+				try:
+					if '404' != self.wget.get_content(url):
+						hit = True
+						self.url_success(url)
+						break
+				except:
+					continue
+			if hit:
 				break
-
-			url = forum_url[url_num] + str(pagedate+1) + '/' + str(pagenum) + ".html"
-			if '404' != self.wget.get_content(url):
-				self.url_success(url)
-				break
-
-			url = forum_url[url_num] + str(pagedate-1) + '/' + str(pagenum) + ".html"
-			if '404' != self.wget.get_content(url):
-				self.url_success(url)
-				break
-			
 	def url_success(self,url):
 		url_sql = "insert into url(url) value('%s')" % (url)
 		self.db.query(url_sql)
