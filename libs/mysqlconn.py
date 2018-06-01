@@ -9,7 +9,7 @@ class MysqlConn(object):
 		mysql_var = {'host':"localhost",    # your host, usually localhost
                      'user':"gecko",         # your username
                      'passwd':"gecko",  # your password
-                     'db':"gecko",
+                     'db':"gecko1",
                      'charset':'utf8'}
 		self.conn=MySQLdb.connect(**mysql_var)
 		self.conn.set_character_set('utf8')
@@ -64,4 +64,4 @@ class MysqlConn(object):
 			return False
 		self.conn.commit()
 		id = self.cursor.lastrowid
-		return id
+		return True

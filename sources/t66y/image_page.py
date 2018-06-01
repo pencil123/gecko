@@ -76,7 +76,11 @@ class image_page(object):
 				#不存在href属性的链接不处理
 				if not self.utils.ads(tags.attrs['href']):
 					content = content + tags.prettify()
-					self.db.query2("insert into links(link) values(%s)",(tags.attrs['href'],))
+					result = self.db.query2("update links set count = count +1 where link = %s",(tags.attrs['href'],))
+					print result
+					if result == 0:
+						self.db.query2("insert into links(link) values(%s)",(tags.attrs['href'],))
+
 				continue
 			else:
 				continue
