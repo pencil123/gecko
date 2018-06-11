@@ -1,0 +1,10 @@
+readme
+
+raw_content 数据表
+status tinyint 字段说明
+1 正常抓取
+2 抓取失败
+3 抓取内容小于2014字节
+4 从内容中获取帖子失败
+
+11 提取links完成

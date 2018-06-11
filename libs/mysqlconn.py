@@ -17,6 +17,7 @@ class MysqlConn(object):
 		self.cursor.execute('SET NAMES utf8;')
 		self.cursor.execute('SET CHARACTER SET utf8;')
 		self.cursor.execute('SET character_set_connection=utf8;')
+		#return self.conn
 		#self.cursor.execute("SET SESSION TRANSACTION ISOLATION LEVEL SERIALIZABLE;")
 	def selectall(self,str_sql):
 		try:
@@ -64,4 +65,5 @@ class MysqlConn(object):
 			return False
 		self.conn.commit()
 		id = self.cursor.lastrowid
-		return True
+		changed = self.conn.affected_rows()
+		return changed
