@@ -25,35 +25,8 @@ class t66y(object):
 	def run(self):
 		#handler = Guess()
 		#self.op_index()
-		#self.modify_content.traversal()
+		self.modify_content.traversal()
 		#self.wget.get_content(self.domain)
-		pattern=re.compile(r'https://t66y.com/htm_data/(\d+)/(\d+)/(\d+)\.html',re.DOTALL)
-		sql_string = "select id,url from url where status=0 limit 500"
-		self.cursor.execute(sql_string)
-		result2 = self.cursor.fetchall()
-
-		for num in range(len(result2)):
-			col_id,url = result2[num]
-			print url
-			match = pattern.match(url)
-			url_id,url_date,url_num = match.groups()
-
-			thread_dict = {}
-			thread_dict['fid'] = url_id
-			thread_dict['thread_url'] = url
-
-			print url_id
-
-			count_sql = "select count(*) from raw_content where url='%s'" % (url,)
-			print count_sql
-			self.cursor.execute(count_sql)
-			count_tuple = self.cursor.fetchall()
-			if count_tuple[0][0]:
-				continue
-			self.raw_content.download(**thread_dict)
-			print "hello"
-			update_sql = "update url set status=1 where id= %s" % (col_id)
-			self.cursor.execute(update_sql)
 
 
 
@@ -145,9 +118,12 @@ class t66y(object):
 			thread_dict = {}
 			thread_dict['fid'] = fid
 			thread_dict['thread_url'] = self.t66y_config['domain'] + thread.a.attrs['href']
+			
 			sql = "select count(*) from raw_content where url='%s'" % (thread_dict['thread_url'])
 			self.cursor.execute(sql)
-			count_tuple = self.cursor.fetchall()
+			count_tuple = self.cursor.fetchone()
+
 			if count_tuple[0]:
 				continue
+
 			self.raw_content.download(**thread_dict)

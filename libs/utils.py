@@ -19,6 +19,18 @@ def connect():
 	cursor.execute('SET character_set_connection=utf8;')
 	return (conn,cursor)
 
+def modify_title(title):
+	if title.endswith('t66y.com'):
+		title_list1 = title.split('-')
+		new_list = title_list1[:-2]
+		title = ' '.join(str(e) for e in new_list)
+
+	match = re.match(r'(.*).[V|v][I|i][P|p](.*)$',title)
+	if match:
+		title = match.group(1)
+		if len(match.groups()) > 1 and len(match.group(2)) > 20:
+			title = title + "VIP " + match.group(2)
+	return title
 
 
 class utils(object):
